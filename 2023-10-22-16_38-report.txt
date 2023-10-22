@@ -1,0 +1,7 @@
+Отчёт о состоянии системы: Пользователи системы: {'lp', 'kernoops', 'avahi', 'user', 'root', 'systemd+', 'rtkit', 'colord', 'message+', 'syslog'} 
+Процессов запущено: 192
+Пользовательских процессов: ['lp:1', 'kernoops:2', 'avahi:2', 'user:85', 'root:95', 'systemd+:3', 'rtkit:1', 'colord:1', 'message+:1', 'syslog:1']
+Всего памяти используется: 4257.2 mb
+Всего CPU используется:70.3 %
+Больше всего памяти использует:/snap/pycharm-commun
+Больше всего CPU использует:/usr/bin/gnome-shell
