@@ -10,13 +10,13 @@ def ps_aux():
 
 
 def get_users(process_result: list):
-    users = [row["USER"] for row in ps_aux()]
+    users = [row["USER"] for row in process_result]
     return users
 
 
 def get_user_process(process_result: list):
     user_process = []
-    users = get_users(ps_aux())
+    users = get_users(process_result)
     for user in set(users):
         user_process.append(f"{user}:{users.count(user)}")
     return user_process
@@ -41,30 +41,23 @@ def get_max_process(process_result: list, value: str):
     count = 0
     name_process = ""
     for row in process_result:
-        match value:
-            case "%CPU":
-                cpu = float(row["%CPU"])
-                if cpu > count:
-                    count = cpu
-                    name_process = row["COMMAND"]
-
-            case "RSS":
-                rss = int(row["RSS"])
-                if rss > count:
-                    count = rss
-                    name_process = row["COMMAND"]
+        current_value = float(row[value])
+        if current_value > count:
+            count = current_value
+            name_process = row["COMMAND"]
     return name_process
 
 
-max_rss = get_max_process(ps_aux(), 'RSS')
-max_cpu = get_max_process(ps_aux(), '%CPU')
+stdout = ps_aux()
+max_rss = get_max_process(stdout, 'RSS')
+max_cpu = get_max_process(stdout, '%CPU')
 data = [
     "Отчёт о состоянии системы: "
-    f"Пользователи системы: {set(get_users(ps_aux()))} ",
-    f"Процессов запущено: {len(ps_aux())}",
-    f"Пользовательских процессов: {get_user_process(ps_aux())}",
-    f"Всего памяти используется: {get_sum(ps_aux(), 'RSS')} mb",
-    f"Всего CPU используется:{get_sum(ps_aux(), '%CPU')} %",
+    f"Пользователи системы: {set(get_users(stdout))} ",
+    f"Процессов запущено: {len(stdout)}",
+    f"Пользовательских процессов: {get_user_process(stdout)}",
+    f"Всего памяти используется: {get_sum(stdout, 'RSS')} mb",
+    f"Всего CPU используется:{get_sum(stdout, '%CPU')} %",
     f"Больше всего памяти использует:{max_rss[:20]}",
     f"Больше всего CPU использует:{max_cpu[:20]}"
 ]
